@@ -11,7 +11,7 @@ https://aenzo-labs-website.onrender.com/
 This repository is intended to run as a **Static Site**.
 
 - Build command: leave blank
-- Publish directory: `. ` is not correct; use exactly `.` (the repository root)
+- Publish directory: `.` (the repository root)
 - Main page: `index.html`
 - Admin page: `admin.html`
 
