@@ -2,15 +2,5 @@ services:
   - type: web
     name: aenzo-labs-website
     runtime: static
-    buildCommand: ''
+    buildCommand: ""
     staticPublishPath: .
-    routes:
-      - type: rewrite
-        source: /admin
-        destination: /admin.html
-      - type: rewrite
-        source: /admin/
-        destination: /admin.html
-      - type: rewrite
-        source: /admin/index.html
-        destination: /admin.html
