@@ -1,38 +1,49 @@
 # AENZO LABS Website
 
-Premium dark-and-gold, responsive Web3 marketing website.
+Premium, responsive dark-and-gold website for AENZO LABS — Web3 marketing, community growth, and campaign services.
 
 ## Live website
+
 https://aenzo-labs-website.onrender.com/
 
 ## Deploy on Render
-Use a Static Site connected to this repository. Leave the build command blank and set publish directory to `.`. The entry point is `index.html`.
 
-## Current features
-- Responsive marketing landing page and service directory
-- Telegram, X and Binance community links
-- Optional live announcements/campaign feed
-- Admin dashboard at `/admin.html` with email/password sign-in
-- Supabase SQL setup for posts, admin allowlist, and persistent home-page view counter
-- Public configuration template at `/config.js`
+This repository is intended to run as a **Static Site**.
 
-## One-time setup required for live database features
-I cannot create resources inside your Supabase account without account authorization. To enable live posts and persistent views:
+- Build command: leave blank
+- Publish directory: `. ` is not correct; use exactly `.` (the repository root)
+- Main page: `index.html`
+- Admin page: `admin.html`
 
-1. Create a project at https://supabase.com/dashboard.
-2. Open **SQL Editor** and run all of `supabase-setup.sql`.
-3. In **Authentication → Users**, create your admin user. Copy the user's UUID.
-4. In SQL Editor, run this command after replacing the placeholder with your actual UUID:
-   `insert into public.admin_users (user_id) values ('YOUR-ADMIN-USER-UUID');`
-5. Open Supabase **Project Settings → API** and copy the Project URL and the public anon/publishable key.
-6. Edit `config.js`: fill in `url` and `anonKey` using the Project URL and **public** key. Do not use a service-role/secret key.
-7. Commit the config.js change to GitHub. Render should redeploy the static site.
-8. Open `/admin.html`, enter the same Project URL and public key, then sign in with your admin email and password. Publish an update to test.
-9. Open the main website and confirm the published update and view counter appear.
+After changing files on the `main` branch, confirm the Render deployment finishes successfully before testing the live site.
 
-## Security notes
-- Do not put service-role/secret keys in browser files or send them in chat.
-- Only user IDs listed in `public.admin_users` can write posts when the included SQL policies are active.
-- The public key is designed for browser use; Row Level Security protects writes.
-- The view counter counts page loads, not unique visitors; automated traffic may be included.
-- Investment returns and campaign results are not guaranteed.
+## Website features
+
+- Responsive landing page and service directory
+- Telegram, X, and Binance Community links
+- Public campaign/announcement feed
+- Admin page at `/admin.html`
+- Supabase-backed post management and persistent view counting, when configured
+
+## Supabase setup
+
+The browser configuration is stored in `config.js`. It must contain only the Supabase project URL and a public anon/publishable key. **Never place a service-role key or other secret in a browser file.**
+
+The project has already been prepared with database schema and access policies. If the database needs to be initialized in a new Supabase project, review and run `supabase-setup.sql` in the Supabase SQL Editor. Do not rerun setup instructions blindly against a production database.
+
+## Admin access
+
+1. Open `/admin.html` after the latest Render deployment is live.
+2. Sign in or complete the owner-authorized registration flow shown by the dashboard.
+3. Confirm the owner email using Supabase Authentication if email confirmation is enabled.
+4. If sign-in is rejected, check the Supabase Authentication user and the admin authorization RPC/policies. Do not add an arbitrary user UUID or disable Row Level Security as a workaround.
+
+## Troubleshooting
+
+- **Admin page shows Not Found:** verify the Render service is connected to this repository and the `main` branch, the publish directory is `.`, and the latest deployment is successful. The file `admin.html` must exist in the published root.
+- **Admin page opens but login fails:** check `config.js`, Supabase Auth, and the owner authorization setup.
+- **Posts or view counts do not update:** check Supabase project settings, database migrations/policies, and browser console errors.
+
+## Security and limits
+
+Public browser keys are designed to be visible; database permissions must be enforced by Supabase Row Level Security and server-side authorization. Never commit passwords, service-role keys, or private API secrets. Marketing results and investment returns are not guaranteed.
