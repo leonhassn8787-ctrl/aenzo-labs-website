@@ -7,7 +7,10 @@ services:
     routes:
       - type: rewrite
         source: /admin
-        destination: /admin.html
+        destination: /admin/index.html
       - type: rewrite
         source: /admin/
-        destination: /admin.html
+        destination: /admin/index.html
+      - type: rewrite
+        source: /admin.html
+        destination: /admin/index.html
