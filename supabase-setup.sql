@@ -56,3 +56,39 @@ grant usage, select on sequence public.site_posts_id_seq to authenticated;
 -- After creating the admin account, copy its UUID from Authentication > Users.
 -- Replace YOUR-ADMIN-USER-UUID below, remove the leading --, and run:
 -- insert into public.admin_users (user_id) values ('YOUR-ADMIN-USER-UUID');
+
+-- Optional site-wide view counter (requires public config.js to be configured).
+create table if not exists public.site_stats (
+  page_key text primary key check (page_key in ('home')),
+  views bigint not null default 0 check (views >= 0),
+  updated_at timestamptz not null default now()
+);
+alter table public.site_stats enable row level security;
+drop policy if exists "Public can read site stats" on public.site_stats;
+create policy "Public can read site stats" on public.site_stats
+for select to anon, authenticated using (true);
+grant select on public.site_stats to anon, authenticated;
+insert into public.site_stats(page_key, views) values ('home', 0)
+on conflict (page_key) do nothing;
+
+create or replace function public.increment_page_view(p_page_key text)
+returns bigint
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare new_views bigint;
+begin
+  if p_page_key <> 'home' then
+    raise exception 'Unsupported page key';
+  end if;
+  insert into public.site_stats(page_key, views, updated_at)
+  values ('home', 1, now())
+  on conflict (page_key) do update
+  set views = public.site_stats.views + 1, updated_at = now()
+  returning views into new_views;
+  return new_views;
+end;
+$$;
+revoke all on function public.increment_page_view(text) from public;
+grant execute on function public.increment_page_view(text) to anon, authenticated;
