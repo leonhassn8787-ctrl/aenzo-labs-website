@@ -1,7 +1,6 @@
 // AENZO LABS public browser configuration.
-// Fill these with the Supabase Project URL and PUBLIC anon/publishable key.
-// Never place a service-role key or secret key in this file.
+// This file contains only the public project URL and publishable key.
 window.AENZO_PUBLIC_CONFIG = {
-  url: "",
-  anonKey: ""
+  url: "https://otnhysyfyrxzjlcrjdmr.supabase.co",
+  anonKey: "sb_publishable_Ne99ks6EQ4GzkgkXlTotgg_64l3zcu7"
 };
