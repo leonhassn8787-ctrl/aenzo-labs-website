@@ -1,7 +1,6 @@
 services:
-  - type: web
+  - type: static
     name: aenzo-labs-website
-    runtime: static
     buildCommand: ''
     staticPublishPath: .
     routes:
