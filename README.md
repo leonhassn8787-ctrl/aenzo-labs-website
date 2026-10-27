@@ -51,3 +51,28 @@ The project has already been prepared with database schema and access policies. 
 ## Security and limits
 
 Public browser keys are designed to be visible; database permissions must be enforced by Supabase Row Level Security and server-side authorization. Never commit passwords, service-role keys, or private API secrets. Marketing results and investment returns are not guaranteed.
+
+
+## Automated validation
+
+GitHub Actions runs the static-site validation workflow on pushes to `main`/ `master`, pull requests, and manual workflow dispatch:
+
+- JavaScript syntax check for `config.js`
+- Syntax checks for inline JavaScript in `index.html` and `admin.html`
+- Validation of local asset paths and same-page section links
+
+Workflow: https://github.com/leonhassn8787-ctrl/aenzo-labs-website/actions
+
+A workflow being configured does not prove that a run passed. Check the Actions page for a green successful run after each deployment.
+
+## Final production checklist
+
+- [ ] Confirm the latest GitHub Actions run passes.
+- [ ] Confirm Render has deployed the intended commit.
+- [ ] Test the public homepage and `/admin.html` on mobile and desktop.
+- [ ] Sign in as the authorized owner and verify create/edit/publish flows for posts, projects, services, menu links, and events.
+- [ ] Confirm anonymous visitors can only read published/visible public content and cannot write admin data.
+- [ ] In Supabase Dashboard, open **Authentication → Security and Protection** (the exact label may vary) and enable **Leaked Password Protection**.
+- [ ] Re-run Supabase Security and Performance Advisors after any policy/function change.
+
+Do not disable Row Level Security to fix an access issue. Public-facing counter RPCs and admin authorization functions are security-sensitive; retain their narrow checks and grant execution only to the roles the site actually needs.
