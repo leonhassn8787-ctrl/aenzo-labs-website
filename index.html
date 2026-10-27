@@ -115,7 +115,7 @@
    if(!response.ok)throw new Error('Could not load project counts');
    const projects=await response.json();
    total.textContent=projects.length.toLocaleString();
-   active.textContent=projects.filter(p=>['upcoming','fundraising'].includes(String(p.status||'').toLowerCase())).length.toLocaleString();
+   active.textContent=projects.filter(p=>{const s=String(p.status||'').toLowerCase();const launch=Date.parse(p.launch_at||'');const effective=(['upcoming','presale','live_presale'].includes(s)&&Number.isFinite(launch)&&launch<=Date.now())?'launched':s;return ['upcoming','presale','live_presale','fundraising'].includes(effective)}).length.toLocaleString();
   }catch(e){total.textContent='—';active.textContent='—';console.error('AENZO project stats failed:',e)}
  }else{total.textContent='—';active.textContent='—'}
  try{
