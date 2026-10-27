@@ -5,12 +5,11 @@ services:
     buildCommand: ""
     staticPublishPath: .
     routes:
-      - type: rewrite
+      - type: redirect
         source: /admin
-        destination: /admin/index.html
-      - type: rewrite
+        destination: /admin.html
+        status: 302
+      - type: redirect
         source: /admin/
-        destination: /admin/index.html
-      - type: rewrite
-        source: /admin.html
-        destination: /admin/index.html
+        destination: /admin.html
+        status: 302
