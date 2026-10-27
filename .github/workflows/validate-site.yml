@@ -101,7 +101,7 @@ jobs:
           for page, parser in parsed.items():
               for attr, ref in parser.refs:
                   ref = ref.strip()
-                  if not ref or ref.startswith(("#", "//", "http://", "https://", "mailto:", "tel:", "javascript:", "data:")):
+                  if not ref or ref.startswith(("//", "http://", "https://", "mailto:", "tel:", "javascript:", "data:")):
                       continue
                   parts = urlsplit(ref)
                   if parts.path.startswith("/"):
