@@ -76,3 +76,19 @@ A workflow being configured does not prove that a run passed. Check the Actions 
 - [ ] Re-run Supabase Security and Performance Advisors after any policy/function change.
 
 Do not disable Row Level Security to fix an access issue. Public-facing counter RPCs and admin authorization functions are security-sensitive; retain their narrow checks and grant execution only to the roles the site actually needs.
+
+
+## Automated validation
+
+GitHub Actions runs the static-site validation workflow on pushes and pull requests. It checks JavaScript syntax in `config.js` and the inline scripts in `index.html` and `admin.html`, plus local asset paths and same-page section links.
+
+- Workflow file: `.github/workflows/validate-site.yml`
+- Runs and results: https://github.com/leonhassn8787-ctrl/aenzo-labs-website/actions
+
+A commit being present does not prove a workflow passed. Check the Actions page for a green successful run after deployment.
+
+## Recommended Supabase Auth hardening
+
+In the Supabase Dashboard, open **Authentication → Security and Protection** (the exact label can vary) and enable **Leaked Password Protection**. Save the setting, then test a normal sign-in and password reset. This setting must be enabled in the dashboard; it is not changed by this repository.
+
+Keep Row Level Security enabled. Never fix an admin login issue by exposing service-role credentials or making admin tables publicly writable.
