@@ -21,7 +21,11 @@ After changing files on the `main` branch, confirm the Render deployment finishe
 
 - Responsive landing page and service directory
 - Telegram, X, and Binance Community links
-- Public campaign/announcement feed
+- Public campaign/announcement feed with admin publishing controls
+- Supabase-backed project directory, project-stage listings, and project link management
+- Admin-managed social links and service catalog
+- AMA/event manager with event dates, reward pools, registration links, and homepage publishing
+- Admin dashboard analytics for updates, projects, social links, services, events, and homepage views
 - Admin page at `/admin.html`
 - Supabase-backed post management and persistent view counting, when configured
 
