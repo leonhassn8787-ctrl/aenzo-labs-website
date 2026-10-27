@@ -211,6 +211,67 @@ jobs:
               sys.exit(1)
           print("HTML ID and local script reference checks passed.")
           PY
+      - name: Validate page metadata and accessibility basics
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import sys
+
+          class MetadataAudit(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.lang = None
+                  self.in_title = False
+                  self.title_text = []
+                  self.viewport = False
+                  self.description = False
+                  self.h1_count = 0
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if tag.lower() == "html":
+                      self.lang = attrs.get("lang")
+                  elif tag.lower() == "title":
+                      self.in_title = True
+                  elif tag.lower() == "meta":
+                      name = (attrs.get("name") or "").lower()
+                      if name == "viewport" and attrs.get("content"):
+                          self.viewport = True
+                      if name == "description" and attrs.get("content", "").strip():
+                          self.description = True
+                  elif tag.lower() == "h1":
+                      self.h1_count += 1
+              def handle_data(self, data):
+                  if self.in_title:
+                      self.title_text.append(data)
+              def handle_endtag(self, tag):
+                  if tag.lower() == "title":
+                      self.in_title = False
+
+          errors = []
+          for page in (Path("index.html"), Path("admin.html")):
+              if not page.is_file():
+                  errors.append(f"{page}: required page is missing")
+                  continue
+              audit = MetadataAudit()
+              audit.feed(page.read_text(encoding="utf-8"))
+              if not audit.lang:
+                  errors.append(f"{page}: <html> must declare a language")
+              if not "".join(audit.title_text).strip():
+                  errors.append(f"{page}: missing non-empty <title>")
+              if not audit.viewport:
+                  errors.append(f"{page}: missing responsive viewport metadata")
+              if page.name == "index.html" and not audit.description:
+                  errors.append(f"{page}: homepage needs a meta description")
+              if page.name == "index.html" and audit.h1_count != 1:
+                  errors.append(f"{page}: homepage should have exactly one h1 (found {audit.h1_count})")
+              print(f"{page}: language/title/viewport checked; h1 count={audit.h1_count}")
+          if errors:
+              print("\n".join(errors), file=sys.stderr)
+              sys.exit(1)
+          print("Page metadata and accessibility basics passed.")
+          PY
       - name: Validate local assets and section links
         shell: bash
         run: |
