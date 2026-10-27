@@ -30,10 +30,10 @@
 <section class="wrap hero"><div><div class="eyebrow">Web3 strategy · Marketing · Community</div><h1>Build trust.<br>Grow with <span class="gold">intent.</span></h1><p>AENZO LABS supports Web3 teams with campaign coordination, creator outreach, community activation and clear project communication—tailored to your goals and audience.</p><div class="actions"><a class="btn" href="#contact">Start a conversation ↗</a><a class="btn secondary" href="#services">Explore services ↓</a></div><div class="contact-banner"><div><h2>Need more information?</h2><p>Talk directly with AENZO LABS on Telegram about any service or project.</p></div><a class="btn" href="https://t.me/AENZO_LABS" target="_blank" rel="noopener noreferrer">✉ Contact Us for More Information ↗</a></div><div class="trustline"><span>Flexible campaign support</span><span>Clear deliverables</span><span>Web3-focused network</span></div></div><div class="visual"><small>STRATEGIC WEB3 GROWTH</small><strong>Visibility with purpose.<br>Communities with value.</strong><div class="vfoot"><span>Independent growth network</span><span>01 / AENZO</span></div></div></section>
 <section class="section" id="aenzo-live-stats" style="padding-top:22px;padding-bottom:30px">
 <div class="wrap">
-<div class="sectionhead"><div class="eyebrow">AENZO LABS at a glance</div><h2>Our project activity</h2><p class="muted">Live counts from the public project directory. Only published listings are included.</p></div>
+<div class="sectionhead"><div class="eyebrow">AENZO LABS at a glance</div><h2>Our project activity</h2><p class="muted">Manually maintained by the AENZO LABS admin team.</p></div>
 <div class="stats-grid">
-<article class="stat-card"><span class="stat-label">Projects Worked With</span><strong id="aenzo-project-total">—</strong><span class="stat-note">Published project listings</span></article>
-<article class="stat-card"><span class="stat-label">Ongoing Projects</span><strong id="aenzo-project-active">—</strong><span class="stat-note">Upcoming & fundraising listings</span></article>
+<article class="stat-card"><span class="stat-label">Projects Worked With</span><strong id="aenzo-project-total">—</strong><span class="stat-note">Total projects completed</span></article>
+<article class="stat-card"><span class="stat-label">Ongoing Projects</span><strong id="aenzo-project-active">—</strong><span class="stat-note">Projects currently in progress</span></article>
 </div>
 <div class="market-panel">
 <div class="market-heading"><div><div class="eyebrow">Crypto market live</div><h3>Major coins — price & daily movement</h3></div><span class="market-note">Market data by TradingView</span></div>
@@ -109,33 +109,16 @@
  const cfg=window.AENZO_PUBLIC_CONFIG;
  if(cfg?.url&&cfg?.anonKey){
   try{
-   const base=cfg.url.replace(/\\/$/,'');
+   const base=cfg.url.replace(/\/$/,'');
    const headers={apikey:cfg.anonKey,Authorization:'Bearer '+cfg.anonKey};
-   const response=await fetch(base+'/rest/v1/projects?select=id,status&published=eq.true',{headers});
-   if(!response.ok)throw new Error('Could not load project counts');
-   const projects=await response.json();
-   total.textContent=projects.length.toLocaleString();
-   active.textContent=projects.filter(p=>{const s=String(p.status||'').toLowerCase();const launch=Date.parse(p.launch_at||'');const effective=(['upcoming','presale','live_presale'].includes(s)&&Number.isFinite(launch)&&launch<=Date.now())?'launched':s;return ['upcoming','presale','live_presale','fundraising'].includes(effective)}).length.toLocaleString();
+   const response=await fetch(base+'/rest/v1/project_activity_metrics?select=completed_count,ongoing_count&id=eq.1',{headers});
+   if(!response.ok)throw new Error('Could not load manually maintained project counts');
+   const rows=await response.json();
+   if(!rows.length)throw new Error('Project counts have not been set yet');
+   total.textContent=Number(rows[0].completed_count||0).toLocaleString();
+   active.textContent=Number(rows[0].ongoing_count||0).toLocaleString();
   }catch(e){total.textContent='—';active.textContent='—';console.error('AENZO project stats failed:',e)}
  }else{total.textContent='—';active.textContent='—'}
  try{
-  const fallback=market.querySelector('.market-fallback');
-  const widget=document.createElement('script');
-  widget.src='https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
-  widget.async=true;
-  widget.text=JSON.stringify({symbols:[
-   {proName:'BINANCE:BTCUSDT',title:'Bitcoin'},
-   {proName:'BINANCE:ETHUSDT',title:'Ethereum'},
-   {proName:'BINANCE:BNBUSDT',title:'BNB'},
-   {proName:'BINANCE:SOLUSDT',title:'Solana'},
-   {proName:'BINANCE:XRPUSDT',title:'XRP'},
-   {proName:'BINANCE:DOGEUSDT',title:'Dogecoin'},
-   {proName:'BINANCE:ADAUSDT',title:'Cardano'},
-   {proName:'BINANCE:TRXUSDT',title:'TRON'}
-  ],showSymbolLogo:true,colorTheme:'dark',isTransparent:true,displayMode:'adaptive',locale:'en'});
-  market.appendChild(widget);
-  if(fallback)fallback.textContent='Live market widget is loading. If it does not appear, check whether your browser blocks third-party widgets.';
- }catch(e){console.error('TradingView ticker failed:',e)}
-})();
 </script>
 </body></html>
