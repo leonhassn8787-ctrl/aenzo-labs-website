@@ -10,7 +10,7 @@
 .game-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.game-card{display:flex;flex-direction:column;min-height:210px;border:1px solid #3a493b;border-radius:12px;padding:18px;background:radial-gradient(circle at 90% 0,#263b2a 0,transparent 48%),linear-gradient(145deg,#121a14,#0b100d)}.game-icon{font-size:29px}.game-card h3{margin:10px 0 5px;font-size:17px}.game-card p{margin:0 0 13px;color:var(--muted);font-size:13px;flex:1}.game-tag{display:inline-block;align-self:flex-start;margin-bottom:5px;padding:4px 7px;border:1px solid #5c6849;border-radius:20px;color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.game-actions{display:flex;gap:8px;flex-wrap:wrap}.game-actions .btn{padding:9px 11px;font-size:11px}.game-panel{margin-top:24px;padding:24px;border:1px solid var(--gold);border-radius:12px;background:linear-gradient(135deg,#1a291d,#0b100d);display:none}.game-panel.active{display:block}.game-panel h3{margin-top:0}.game-output{font-size:clamp(22px,4vw,36px);font-weight:900;color:var(--gold);padding:12px 0}.game-note{font-size:12px;color:var(--muted)}.game-search{width:100%;max-width:440px;padding:12px;border:1px solid #455348;border-radius:7px;background:#0b100d;color:var(--text);margin:0 0 18px}.game-disclaimer{margin-top:22px;padding:15px;border-left:3px solid var(--gold);background:#111811;color:#b6c2b7;font-size:12px}@media(max-width:900px){.game-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.game-card{padding:14px;min-height:220px}}@media(max-width:380px){.game-grid{grid-template-columns:1fr}}
 
 /* Homepage project metrics and live crypto ticker */
-.stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 28px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 28px}
 .stat-card{padding:25px;border:1px solid #665735;border-radius:12px;background:linear-gradient(135deg,#18251a,#0d120e 70%);display:flex;flex-direction:column;gap:7px;min-height:150px}
 .stat-label{color:#dec58a;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
 .stat-card strong{font-size:clamp(38px,5vw,56px);line-height:1.1;letter-spacing:-.04em;color:#f4f2e9}
@@ -27,14 +27,19 @@
 <body>
 <header class="top"><div class="wrap nav"><a class="brand" href="#home">AENZO <span>LABS</span></a><nav class="links" id="main-navigation" aria-label="Main navigation"><a href="#services">Services</a><a href="#process">Process</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#partnerships">Partnerships</a><a href="#talent">Hire Talent</a><a href="#events">Events</a><a href="#updates">Updates</a><a href="#contact">Contact</a></nav><a class="btn" href="#contact">Discuss a campaign ↗</a></div></header>
 <main id="home">
-<section class="wrap hero"><div><div class="eyebrow">Web3 strategy · Marketing · Community</div><h1>Build trust.<br>Grow with <span class="gold">intent.</span></h1><p>AENZO LABS supports Web3 teams with campaign coordination, creator outreach, community activation and clear project communication—tailored to your goals and audience.</p><div class="actions"><a class="btn" href="#contact">Start a conversation ↗</a><a class="btn secondary" href="#services">Explore services ↓</a></div><div class="contact-banner"><div><h2>Need more information?</h2><p>Talk directly with AENZO LABS on Telegram about any service or project.</p></div><a class="btn" href="https://t.me/AENZO_LABS" target="_blank" rel="noopener noreferrer">✉ Contact Us for More Information ↗</a></div><div class="trustline"><span>Flexible campaign support</span><span>Clear deliverables</span><span>Web3-focused network</span></div></div><div class="visual"><small>STRATEGIC WEB3 GROWTH</small><strong>Visibility with purpose.<br>Communities with value.</strong><div class="vfoot"><span>Independent growth network</span><span>01 / AENZO</span></div></div></section>
 <section class="section" id="aenzo-live-stats" style="padding-top:22px;padding-bottom:30px">
 <div class="wrap">
 <div class="sectionhead"><div class="eyebrow">AENZO LABS at a glance</div><h2>Our project activity</h2><p class="muted">Manually maintained by the AENZO LABS admin team.</p></div>
 <div class="stats-grid">
-<article class="stat-card"><span class="stat-label">Projects Worked With</span><strong id="aenzo-project-total">—</strong><span class="stat-note">Total projects completed</span></article>
+<article class="stat-card"><span class="stat-label">Projects Partnered</span><strong id="aenzo-project-total">—</strong><span class="stat-note">Total completed and ongoing projects</span></article>
 <article class="stat-card"><span class="stat-label">Ongoing Projects</span><strong id="aenzo-project-active">—</strong><span class="stat-note">Projects currently in progress</span></article>
+<article class="stat-card"><span class="stat-label">Completed Projects</span><strong id="aenzo-project-completed">—</strong><span class="stat-note">Projects successfully completed</span></article>
 </div>
+</div>
+</section>
+<section class="wrap hero"><div><div class="eyebrow">Web3 strategy · Marketing · Community</div><h1>Build trust.<br>Grow with <span class="gold">intent.</span></h1><p>AENZO LABS supports Web3 teams with campaign coordination, creator outreach, community activation and clear project communication—tailored to your goals and audience.</p><div class="actions"><a class="btn" href="#contact">Start a conversation ↗</a><a class="btn secondary" href="#services">Explore services ↓</a></div><div class="contact-banner"><div><h2>Need more information?</h2><p>Talk directly with AENZO LABS on Telegram about any service or project.</p></div><a class="btn" href="https://t.me/AENZO_LABS" target="_blank" rel="noopener noreferrer">✉ Contact Us for More Information ↗</a></div><div class="trustline"><span>Flexible campaign support</span><span>Clear deliverables</span><span>Web3-focused network</span></div></div><div class="visual"><small>STRATEGIC WEB3 GROWTH</small><strong>Visibility with purpose.<br>Communities with value.</strong><div class="vfoot"><span>Independent growth network</span><span>01 / AENZO</span></div></section>
+<section class="section" id="aenzo-market" style="padding-top:22px;padding-bottom:30px">
+<div class="wrap">
 <div class="market-panel">
 <div class="market-heading"><div><div class="eyebrow">Crypto market live</div><h3>Major coins — price & daily movement</h3></div><span class="market-note">Market data by TradingView</span></div>
 <div class="tradingview-widget-container" id="aenzo-market-widget">
@@ -105,6 +110,7 @@
 (async()=>{
  const total=document.getElementById('aenzo-project-total');
  const active=document.getElementById('aenzo-project-active');
+ const completed=document.getElementById('aenzo-project-completed');
  const market=document.getElementById('aenzo-market-widget');
  const cfg=window.AENZO_PUBLIC_CONFIG;
  if(cfg?.url&&cfg?.anonKey){
@@ -115,10 +121,13 @@
    if(!response.ok)throw new Error('Could not load manually maintained project counts');
    const rows=await response.json();
    if(!rows.length)throw new Error('Project counts have not been set yet');
-   total.textContent=Number(rows[0].completed_count||0).toLocaleString();
-   active.textContent=Number(rows[0].ongoing_count||0).toLocaleString();
-  }catch(e){total.textContent='—';active.textContent='—';console.error('AENZO project stats failed:',e)}
- }else{total.textContent='—';active.textContent='—'}
+   const completedCount=Number(rows[0].completed_count||0);
+   const ongoingCount=Number(rows[0].ongoing_count||0);
+   total.textContent=(completedCount+ongoingCount).toLocaleString();
+   active.textContent=ongoingCount.toLocaleString();
+   completed.textContent=completedCount.toLocaleString();
+  }catch(e){total.textContent='—';active.textContent='—';completed.textContent='—';console.error('AENZO project stats failed:',e)}
+ }else{total.textContent='—';active.textContent='—';completed.textContent='—'}
  try{
   const fallback=market.querySelector('.market-fallback');
   const widget=document.createElement('script');
