@@ -69,6 +69,99 @@ jobs:
               sys.exit(1)
           print("Inline JavaScript syntax checks passed.")
           PY
+      - name: Validate external JavaScript files and duplicate IDs
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit, unquote
+          import sys
+
+          class AuditParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.script_sources = []
+                  self.ids = []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if attrs.get("id"):
+                      self.ids.append(attrs["id"])
+                  if tag.lower() == "script" and attrs.get("src"):
+                      self.script_sources.append(attrs["src"].strip())
+
+          errors = []
+          root = Path(".").resolve()
+          for page in (Path("index.html"), Path("admin.html")):
+              parser = AuditParser()
+              parser.feed(page.read_text(encoding="utf-8"))
+              seen = set()
+              for element_id in parser.ids:
+                  if element_id in seen:
+                      errors.append(f"{page}: duplicate id: {element_id}")
+                  seen.add(element_id)
+              for src in parser.script_sources:
+                  if not src or src.startswith(("//", "http://", "https://", "data:")):
+                      continue
+                  parts = urlsplit(src)
+                  if parts.path.startswith("/"):
+                      continue
+                  target = (page.parent / unquote(parts.path)).resolve()
+                  if root not in target.parents and target != root:
+                      errors.append(f"{page}: script source escapes repository: {src}")
+                  elif not target.is_file():
+                      errors.append(f"{page}: missing external script: {src}")
+                  elif target.suffix.lower() == ".js":
+                      # External scripts are syntax-checked in a separate step below.
+                      pass
+              print(f"{page}: checked {len(parser.ids)} id(s) and {len(parser.script_sources)} external script reference(s)")
+          if errors:
+              print("\\n".join(errors), file=sys.stderr)
+              sys.exit(1)
+          print("Duplicate-ID and external-script path checks passed.")
+          PY
+      - name: Validate referenced external JavaScript syntax
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit, unquote
+          import subprocess, sys
+
+          class ScriptRefs(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.sources = []
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() == "script":
+                      src = dict(attrs).get("src")
+                      if src:
+                          self.sources.append(src.strip())
+
+          errors = []
+          checked = set()
+          for page in (Path("index.html"), Path("admin.html")):
+              parser = ScriptRefs()
+              parser.feed(page.read_text(encoding="utf-8"))
+              for src in parser.sources:
+                  if not src or src.startswith(("//", "http://", "https://", "data:")):
+                      continue
+                  parts = urlsplit(src)
+                  if parts.path.startswith("/") or not parts.path.lower().endswith(".js"):
+                      continue
+                  target = (page.parent / unquote(parts.path)).resolve()
+                  if target in checked or not target.is_file():
+                      continue
+                  checked.add(target)
+                  result = subprocess.run(["node", "--check", str(target)], capture_output=True, text=True)
+                  if result.returncode:
+                      errors.append(f"{target}: JavaScript syntax check failed:\\n{result.stderr}")
+          if errors:
+              print("\\n".join(errors), file=sys.stderr)
+              sys.exit(1)
+          print(f"External JavaScript syntax checks passed ({len(checked)} file(s)).")
+          PY
       - name: Validate local assets and section links
         shell: bash
         run: |
