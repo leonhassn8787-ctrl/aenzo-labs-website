@@ -162,6 +162,55 @@ jobs:
               sys.exit(1)
           print(f"External JavaScript syntax checks passed ({len(checked)} file(s)).")
           PY
+      - name: Validate HTML IDs and local script references
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit, unquote
+          import sys
+
+          class Audit(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.ids = []
+                  self.scripts = []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if attrs.get("id"):
+                      self.ids.append(attrs["id"])
+                  if tag.lower() == "script" and attrs.get("src"):
+                      self.scripts.append(attrs["src"].strip())
+
+          errors = []
+          root = Path(".").resolve()
+          for page in (Path("index.html"), Path("admin.html")):
+              audit = Audit()
+              audit.feed(page.read_text(encoding="utf-8"))
+              seen = set()
+              for value in audit.ids:
+                  if value in seen:
+                      errors.append(f"{page}: duplicate id '{value}'")
+                  seen.add(value)
+              for src in audit.scripts:
+                  if not src or src.startswith(("//", "http://", "https://", "data:")):
+                      continue
+                  parts = urlsplit(src)
+                  if not parts.path:
+                      continue
+                  relative = parts.path.lstrip("/")
+                  target = (root / unquote(relative)).resolve()
+                  if root not in target.parents and target != root:
+                      errors.append(f"{page}: script path escapes repository: {src}")
+                  elif not target.is_file():
+                      errors.append(f"{page}: missing local script file: {src}")
+              print(f"{page}: audited {len(audit.ids)} IDs and {len(audit.scripts)} script references")
+          if errors:
+              print("\\n".join(errors), file=sys.stderr)
+              sys.exit(1)
+          print("HTML ID and local script reference checks passed.")
+          PY
       - name: Validate local assets and section links
         shell: bash
         run: |
