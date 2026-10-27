@@ -120,5 +120,23 @@
   }catch(e){total.textContent='—';active.textContent='—';console.error('AENZO project stats failed:',e)}
  }else{total.textContent='—';active.textContent='—'}
  try{
+  const fallback=market.querySelector('.market-fallback');
+  const widget=document.createElement('script');
+  widget.src='https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+  widget.async=true;
+  widget.text=JSON.stringify({symbols:[
+   {proName:'BINANCE:BTCUSDT',title:'Bitcoin'},
+   {proName:'BINANCE:ETHUSDT',title:'Ethereum'},
+   {proName:'BINANCE:BNBUSDT',title:'BNB'},
+   {proName:'BINANCE:SOLUSDT',title:'Solana'},
+   {proName:'BINANCE:XRPUSDT',title:'XRP'},
+   {proName:'BINANCE:DOGEUSDT',title:'Dogecoin'},
+   {proName:'BINANCE:ADAUSDT',title:'Cardano'},
+   {proName:'BINANCE:TRXUSDT',title:'TRON'}
+  ],showSymbolLogo:true,colorTheme:'dark',isTransparent:true,displayMode:'adaptive',locale:'en'});
+  market.appendChild(widget);
+  if(fallback)fallback.textContent='Live market widget is loading. If it does not appear, check whether your browser blocks third-party widgets.';
+ }catch(e){console.error('TradingView ticker failed:',e)}
+})();
 </script>
 </body></html>
