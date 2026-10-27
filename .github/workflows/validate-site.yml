@@ -67,3 +67,56 @@ jobs:
               sys.exit(1)
           print("Inline JavaScript syntax checks passed.")
           PY
+      - name: Validate local assets and section links
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit, unquote
+          import sys
+
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.refs = []
+                  self.ids = set()
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if attrs.get("id"):
+                      self.ids.add(attrs["id"])
+                  for attr in ("href", "src"):
+                      value = attrs.get(attr)
+                      if value:
+                          self.refs.append((attr, value))
+
+          errors = []
+          root = Path(".").resolve()
+          pages = [Path("index.html"), Path("admin.html")]
+          parsed = {}
+          for page in pages:
+              parser = PageParser()
+              parser.feed(page.read_text(encoding="utf-8"))
+              parsed[page] = parser
+          for page, parser in parsed.items():
+              for attr, ref in parser.refs:
+                  ref = ref.strip()
+                  if not ref or ref.startswith(("#", "//", "http://", "https://", "mailto:", "tel:", "javascript:", "data:")):
+                      continue
+                  parts = urlsplit(ref)
+                  if parts.path.startswith("/"):
+                      continue
+                  if parts.path:
+                      target = (page.parent / unquote(parts.path)).resolve()
+                      if root not in target.parents and target != root:
+                          errors.append(f"{page}: {attr} escapes repository: {ref}")
+                      elif not target.exists():
+                          errors.append(f"{page}: missing local target: {ref}")
+                  if parts.fragment and parts.path in ("",):
+                      if unquote(parts.fragment) not in parser.ids:
+                          errors.append(f"{page}: missing section id: #{unquote(parts.fragment)}")
+          if errors:
+              print("\\n".join(errors), file=sys.stderr)
+              sys.exit(1)
+          print("Local asset and in-page section checks passed.")
+          PY
