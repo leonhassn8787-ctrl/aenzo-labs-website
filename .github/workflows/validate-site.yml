@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Validate public configuration syntax
+        run: node --check config.js
       - name: Validate inline JavaScript in site pages
         shell: bash
         run: |
