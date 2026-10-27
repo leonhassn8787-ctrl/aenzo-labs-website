@@ -58,8 +58,9 @@ Public browser keys are designed to be visible; database permissions must be enf
 GitHub Actions runs the static-site validation workflow on pushes to `main`/ `master`, pull requests, and manual workflow dispatch:
 
 - JavaScript syntax check for `config.js`
-- Syntax checks for inline JavaScript in `index.html` and `admin.html`
+- Syntax checks for inline and referenced local JavaScript files
 - Validation of local asset paths and same-page section links
+- Detection of duplicate HTML IDs and missing external script files
 
 Workflow: https://github.com/leonhassn8787-ctrl/aenzo-labs-website/actions
 
