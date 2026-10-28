@@ -22,10 +22,98 @@
 .tradingview-widget-container__widget{width:100%}
 .market-fallback{font-size:12px;color:#a9b4aa;padding:12px 0}
 @media(max-width:500px){.stats-grid{grid-template-columns:1fr}.stat-card{min-height:130px}.market-panel{padding:16px}}
+
+/* AENZO LABS premium visual refinement — October 2026 */
+:root{
+ --bg:#070a08;--panel:#0e1510;--line:#293b2d;--gold:#e3ca8c;--gold2:#b99a5b;
+ --text:#f5f3ec;--muted:#aeb8af;--green:#1c8a55;
+}
+body{
+ background:
+  radial-gradient(ellipse at 50% -12%,rgba(67,105,69,.26),transparent 43%),
+  radial-gradient(ellipse at 100% 38%,rgba(175,139,70,.08),transparent 32%),
+  #070a08;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.14;
+ background-image:linear-gradient(rgba(220,201,143,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(220,201,143,.055) 1px,transparent 1px);
+ background-size:54px 54px;mask-image:linear-gradient(to bottom,black,transparent 82%);
+}
+.top{background:rgba(7,10,8,.88);border-bottom-color:rgba(227,202,140,.18);box-shadow:0 10px 36px rgba(0,0,0,.16)}
+.nav{min-height:78px}
+.brand img{filter:drop-shadow(0 0 14px rgba(55,205,112,.19))}
+.btn{border-radius:8px;box-shadow:0 6px 24px rgba(185,154,91,.12)}
+.btn.secondary{box-shadow:none}
+.hero{padding-top:76px;padding-bottom:82px}
+.hero h1{max-width:720px;text-wrap:balance}
+.hero p{line-height:1.8}
+.visual{
+ border-color:rgba(227,202,140,.36);border-radius:18px;
+ background:radial-gradient(ellipse at 85% 18%,rgba(66,115,71,.42),transparent 40%),linear-gradient(145deg,#17251a,#0b100c 66%,#211b10);
+ box-shadow:0 24px 80px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.045);
+}
+.section{position:relative}
+.sectionhead{margin-bottom:34px}
+.sectionhead h2{max-width:850px;text-wrap:balance}
+.sectionhead p{line-height:1.8}
+.card,.stat-card,.aboutbox,.contact,.contactbox,.faq details{
+ border-color:rgba(159,178,154,.18);border-radius:14px;
+ box-shadow:0 14px 40px rgba(0,0,0,.13);
+}
+.card{transition:transform .22s ease,border-color .22s ease,background .22s ease}
+.card:hover{transform:translateY(-4px);border-color:rgba(227,202,140,.52);background:linear-gradient(145deg,#17221a,#0b100d)}
+.cards{gap:18px}
+.stat-card{
+ position:relative;overflow:hidden;padding:27px;
+ background:radial-gradient(ellipse at 100% 0,rgba(197,165,94,.13),transparent 52%),linear-gradient(145deg,#142017,#0b100d);
+ border-color:rgba(227,202,140,.3);
+}
+.stat-card:after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(transparent,var(--gold),transparent);opacity:.75}
+.stat-label{letter-spacing:.13em}
+.stat-card strong{font-variant-numeric:tabular-nums}
+.market-panel{
+ position:relative;border-color:rgba(227,202,140,.32);border-radius:16px;padding:25px;
+ background:radial-gradient(ellipse at 8% 0,rgba(50,99,61,.2),transparent 46%),linear-gradient(145deg,#101812,#090d0a);
+ box-shadow:0 20px 55px rgba(0,0,0,.23),inset 0 1px rgba(255,255,255,.035);
+}
+.market-heading{align-items:center;border-bottom:1px solid rgba(255,255,255,.09);padding-bottom:18px;margin-bottom:14px}
+.market-heading h3{letter-spacing:-.025em}
+.market-note{border:1px solid rgba(227,202,140,.22);border-radius:30px;padding:7px 11px;color:#d7c99e}
+.tradingview-widget-container{min-height:90px;border-radius:10px;background:rgba(255,255,255,.015)}
+.market-fallback{padding:18px 4px;color:#b5c0b5}
+.strip{border-color:rgba(227,202,140,.16);background:linear-gradient(90deg,#0d1510,#121910 50%,#0d1510)}
+.step{border-top-color:rgba(227,202,140,.65)}
+.contact{background:radial-gradient(ellipse at 0 0,rgba(45,88,53,.2),transparent 50%),linear-gradient(130deg,#121a14,#090d0a)}
+.contact-banner{border-color:rgba(227,202,140,.6);background:linear-gradient(110deg,rgba(37,58,39,.9),rgba(13,19,14,.97) 62%,rgba(49,39,19,.75));box-shadow:0 12px 38px rgba(0,0,0,.2)}
+.project-list .card{border-color:rgba(227,202,140,.22);background:linear-gradient(120deg,#132018,#0a100c 75%)}
+.project-number{background:linear-gradient(145deg,#e6d49d,#a98b4c);color:#11150f;border-color:#f2e5bb;box-shadow:0 0 0 5px rgba(227,202,140,.1)}
+.project-list .card .n,.post-date{color:#d8c58c}
+.game-card{border-color:rgba(227,202,140,.2);border-radius:14px;background:radial-gradient(circle at 90% 0,rgba(53,91,55,.35),transparent 48%),linear-gradient(145deg,#121b14,#0a100c)}
+.game-panel{border-color:rgba(227,202,140,.48);border-radius:14px}
+footer{border-top-color:rgba(227,202,140,.18);background:rgba(5,8,6,.5)}
+@media(min-width:1100px){
+ .hero{gap:64px}
+ .section{padding-top:84px;padding-bottom:84px}
+ #aenzo-live-stats.section,#aenzo-market.section{padding-top:28px;padding-bottom:28px}
+}
+@media(max-width:800px){
+ .nav{min-height:68px}
+ .hero{padding-top:52px;padding-bottom:56px}
+ .market-panel{padding:18px}
+ .cards{gap:13px}
+}
+@media(max-width:500px){
+ .market-heading{align-items:flex-start}
+ .market-note{font-size:10px}
+ .stat-card{padding:22px}
+ .contact-banner{padding:18px}
+ .hero h1{font-size:clamp(42px,12vw,52px)}
+}
+
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap nav"><a class="brand" href="#home" aria-label="AENZO LABS home"><img src="/aenzo-labs-website/assets/aenzo-logo.svg" alt="AENZO LABS logo" width="520" height="180"></a><nav class="links" id="main-navigation" aria-label="Main navigation"><a href="#services">Services</a><a href="#process">Process</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#partnerships">Partnerships</a><a href="#talent">Hire Talent</a><a href="#events">Events</a><a href="#updates">Updates</a><a href="#contact">Contact</a></nav><a class="btn" href="#contact">Discuss a campaign ↗</a></div></header>
+<header class="top"><div class="wrap nav"><a class="brand" href="#home" aria-label="AENZO LABS home"><img src="assets/aenzo-logo.svg" alt="AENZO LABS logo" width="520" height="180"></a><nav class="links" id="main-navigation" aria-label="Main navigation"><a href="#services">Services</a><a href="#process">Process</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#partnerships">Partnerships</a><a href="#talent">Hire Talent</a><a href="#events">Events</a><a href="#updates">Updates</a><a href="#contact">Contact</a></nav><a class="btn" href="#contact">Discuss a campaign ↗</a></div></header>
 <main id="home">
 <section class="section" id="aenzo-live-stats" style="padding-top:22px;padding-bottom:30px">
 <div class="wrap">
